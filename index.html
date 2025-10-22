@@ -53,8 +53,8 @@
 
     /* Styling tambahan opsional */
     a {
-      color: #0d6efd;
-      text-decoration: underline;
+      color: blue;
+      text-decoration: none;
     }
     a:hover {
       color: #f27b09;
@@ -98,6 +98,8 @@
 
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script>
+    document.getElementById("year").textContent = new Date().getFullYear();
+    
     $(document).ready(function() {
       const scriptUrl = "https://script.google.com/macros/s/AKfycby-SCJYg82ajGrbdhTz6zfg7ZCdPx3Zsv0DcnSqCgxxy8bVV_7EJo1214XDV7nHUS4/exec"; // ganti dgn URL kamu
 
