@@ -110,7 +110,8 @@
           $("#subTitle").text(data.h2 || "");
           // 💡 Gunakan .html() agar tag seperti <a>, <b>, <span style=""> tetap aktif
           $("#paragraph").html(data.p || "");
-          $("#footer").html(data.footer || "");
+          const footerHtml = (data.footer || "").replace("{{year}}", new Date().getFullYear());
+          $("#footer").html(footerHtml);
         } else {
           $("body").html("<div class='text-center p-5 text-danger'>Gagal memuat data.</div>");
         }
