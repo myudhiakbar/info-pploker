@@ -185,7 +185,7 @@
         const { value: formValues } = await Swal.fire({
           title: 'Hubungi Kami',
           html: `
-            <input id="swal-nama" class="swal2-input" placeholder="Nama Lengkap">
+            <input id="swal-nama" class="swal2-input" placeholder="Nama">
             <textarea id="swal-isiPesan" class="swal2-textarea" placeholder="Isi Pesan"></textarea>
           `,
           focusConfirm: false,
@@ -205,15 +205,14 @@
         });
 
         if (formValues) {
-          const ADMIN_WA = "6287713314496"; // nomor admin
+          const ADMIN_WA = "6287713314496";
           const { nama, isiPesan } = formValues;
 
           // Gunakan \n untuk line break, lalu encode sekali
           const pesan = 
             `Halo min, saya ${nama}, saya minat posting iklan di @lokerkesehatanid\n\n` +
             `Isi pesan: ${isiPesan}`;
-
-          // Encode hanya sekali agar tidak double %0A
+          
           const waLink = `https://wa.me/${ADMIN_WA}?text=${encodeURIComponent(pesan)}`;
 
           window.location.href = waLink;
