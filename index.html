@@ -4,8 +4,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title id="pageTitle">Sedang memuat data...</title>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"/>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css"/>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@4/animate.min.css"/>
   
   <style>
     /* Jaga spasi dan enter agar tampil sesuai data Spreadsheet */
@@ -18,14 +19,15 @@
     #mainTitle {
       font-size: 2.5rem;
       color: #0d6efd;
-      margin-bottom: 1rem;
+      margin: 0 0 1rem;
+      text-align: center;
       font-weight: 700;
     }
 
     #subTitle {
       font-size: 1.2rem;
       color: #3300ff;
-      margin-bottom: 1.5rem;
+      margin: 0 0 1.5rem;
       text-align: left;
       font-weight: 500;
     }
@@ -41,14 +43,6 @@
     #footer {
       font-size: 0.9rem;
       padding: 1.8rem;
-    }
-
-    .container {
-      padding: 0 400px;
-    }
-
-    .center-btn {
-      text-align: center;
     }
 
     /* Styling tambahan opsional */
@@ -68,16 +62,81 @@
     span[style] {
       display: inline;
     }
+    
+    #paragraph .btn-wa {
+      background-color: #19a54c;
+      color: #fff;
+      padding: 8px 0;
+      border-radius: 5px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      margin: -5px auto;
+      font-size: 1rem;
+      font-weight: 400;
+      text-transform: uppercase;
+      transition: all 0.3s ease;
+    }
+
+    #paragraph .btn-wa:hover {
+      background-color: #1a6938;
+      box-shadow: 0 4px 10px rgba(37, 211, 102, 0.3);
+    }
+
+    #paragraph .btn-warning {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      margin: -5px auto;
+      font-weight: 400;
+      text-transform: uppercase;
+    }
+
+    #paragraph .btn-warning:hover {
+      background-color: #b68d14be;
+    }
+
+    .swal2-input, 
+    .swal2-textarea {
+      width: 100% !important;
+      margin: 10px 0;
+      font-size: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+
+    .swal2-input::placeholder,
+    .swal2-textarea::placeholder {
+      color: #aaa;
+      font-size: 0.95rem;
+    }
+
+    .swal2-textarea {
+      height: 200px;
+      resize: vertical;
+    }
 
     /* Responsive */
-    /* Tablet */
-    @media (min-width: 768px) and (max-width: 1024px) {
+    @media (min-width: 1200px) {
       .container {
-        padding: 0 40px;
+        padding: 0 350px;
+      }
+
+      #paragraph .btn-wa {
+        align-items: center;
+        justify-content: center;
+        width: 70%;
+      }
+
+    #paragraph .btn-warning {
+        align-items: center;
+        justify-content: center;
+        width: 70%;
       }
     }
 
-    /* Mobile */
     @media (max-width: 767px) {  
       .container {
         padding: 0 40px;
@@ -97,26 +156,74 @@
   <footer id="footer" class="text-center mt-auto"></footer>
 
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <script>
-    $(document).ready(function() {
-      const scriptUrl = "https://script.google.com/macros/s/AKfycby-SCJYg82ajGrbdhTz6zfg7ZCdPx3Zsv0DcnSqCgxxy8bVV_7EJo1214XDV7nHUS4/exec"; // ganti dgn URL kamu
+  $(document).ready(function() {
+    const scriptUrl = "https://script.google.com/macros/s/AKfycby-SCJYg82ajGrbdhTz6zfg7ZCdPx3Zsv0DcnSqCgxxy8bVV_7EJo1214XDV7nHUS4/exec";
 
-      $.get(scriptUrl, function(data) {
-        if (data) {
-          document.title = data.title || "Tanpa Judul";
-          $("#mainTitle").text(data.h1 || "");
-          $("#subTitle").text(data.h2 || "");
-          // 💡 Gunakan .html() agar tag seperti <a>, <b>, <span style=""> tetap aktif
-          $("#paragraph").html(data.p || "");
-          const footerHtml = (data.footer || "").replace("{{year}}", new Date().getFullYear());
-          $("#footer").html(footerHtml);
-        } else {
-          $("body").html("<div class='text-center p-5 text-danger'>Gagal memuat data.</div>");
-        }
-      }).fail(function() {
-        $("body").html("<div class='text-center p-5 text-danger'>Gagal menghubungi server.</div>");
-      });
+    // ===== Ambil data dari Google Sheet =====
+    $.get(scriptUrl, function(data) {
+      if (data) {
+        document.title = data.title || "Tanpa Judul";
+        $("#mainTitle").text(data.h1 || "");
+        $("#subTitle").text(data.h2 || "");
+        $("#paragraph").html(data.p || "");
+        const footerHtml = (data.footer || "").replace("{{year}}", new Date().getFullYear());
+        $("#footer").html(footerHtml);
+
+        // Aktifkan tombol WA setelah konten dimuat
+        aktifkanTombolWA();
+      } else {
+        $("body").html("<div class='text-center p-5 text-danger'>Gagal memuat data.</div>");
+      }
+    }).fail(function() {
+      $("body").html("<div class='text-center p-5 text-danger'>Gagal menghubungi server.</div>");
     });
+
+    // ===== Fungsi tombol WA =====
+    function aktifkanTombolWA() {
+      $("#paragraph").on("click", ".btn-wa", async function (e) {
+        e.preventDefault();
+
+        const { value: formValues } = await Swal.fire({
+          title: 'Hubungi Kami',
+          html: `
+            <input id="swal-nama" class="swal2-input" placeholder="Nama Lengkap">
+            <textarea id="swal-isiPesan" class="swal2-textarea" placeholder="Isi Pesan"></textarea>
+          `,
+          focusConfirm: false,
+          showCancelButton: true,
+          confirmButtonText: 'Kirim ke WhatsApp',
+          cancelButtonText: 'Batal',
+          preConfirm: () => {
+            const nama = document.getElementById('swal-nama').value.trim();
+            const isiPesan = document.getElementById('swal-isiPesan').value.trim();
+            if (!nama || !isiPesan) {
+              Swal.showValidationMessage('Semua field form wajib diisi ya!');
+              return false;
+            }
+            return { nama, isiPesan };
+          },
+          hideClass: { popup: 'animate__animated animate__zoomOut' }
+        });
+
+        if (formValues) {
+          const ADMIN_WA = "6287713314496"; // nomor admin
+          const { nama, isiPesan } = formValues;
+
+          // Gunakan \n untuk line break, lalu encode sekali
+          const pesan = 
+            `Halo min, saya ${nama}, saya minat posting iklan di @lokerkesehatanid\n\n` +
+            `Isi pesan: ${isiPesan}`;
+
+          // Encode hanya sekali agar tidak double %0A
+          const waLink = `https://wa.me/${ADMIN_WA}?text=${encodeURIComponent(pesan)}`;
+
+          window.location.href = waLink;
+        }
+      });
+    }
+  });
   </script>
 </body>
 </html>
