@@ -188,17 +188,20 @@
             <input id="swal-nama" class="swal2-input" placeholder="Nama">
             <textarea id="swal-isiPesan" class="swal2-textarea" placeholder="Isi Pesan"></textarea>
           `,
-          focusConfirm: false,
           showCancelButton: true,
           confirmButtonText: 'Kirim ke WhatsApp',
           cancelButtonText: 'Batal',
-          preConfirm: () => {
+          allowOutsideClick: false,
+          showLoaderOnConfirm: true,
+          preConfirm: async () => {
             const nama = document.getElementById('swal-nama').value.trim();
             const isiPesan = document.getElementById('swal-isiPesan').value.trim();
             if (!nama || !isiPesan) {
               Swal.showValidationMessage('Semua field form wajib diisi ya!');
               return false;
             }
+            Swal.isLoading();
+            await new Promise(resolve => setTimeout(resolve, 2000));
             return { nama, isiPesan };
           },
           hideClass: { popup: 'animate__animated animate__zoomOut' }
