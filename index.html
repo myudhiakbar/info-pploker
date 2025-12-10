@@ -63,38 +63,42 @@
       display: inline;
     }
     
-    #paragraph .btn-wa {
-      background-color: #19a54c;
-      color: #fff;
+    /* === Custom Styling untuk Tombol === */
+    .btn-custom-order {
       display: inline-block;
-      padding: 8px 0;
-      border-radius: 5px;
-      align-items: center;
-      justify-content: center;
       width: 100%;
+      padding: 12px 20px !important;
       font-size: 1rem;
-      font-weight: 400;
+      font-weight: 600;
       text-transform: uppercase;
-      transition: all 0.3s ease;
+      border-radius: 6px;
+      transition: 0.3s ease;
     }
-
-    #paragraph .btn-wa:hover {
-      background-color: #1a6938;
-      box-shadow: 0 4px 10px rgba(37, 211, 102, 0.3);
+    
+    .btn-custom-order:hover {
+      opacity: 0.85;
     }
-
-    #paragraph .btn-warning {
+    
+    /* Tombol WhatsApp */
+    .btn-custom-wa {
+      display: inline-flex;
       align-items: center;
       justify-content: center;
+      gap: 8px;
       width: 100%;
-      font-weight: 400;
+      padding: 12px 20px !important;
+      font-size: 1rem;
+      font-weight: 600;
       text-transform: uppercase;
+      border-radius: 6px;
+      transition: 0.3s ease;
     }
-
-    #paragraph .btn-warning:hover {
-      background-color: #b68d14be;
+    
+    .btn-custom-wa:hover {
+      box-shadow: 0 4px 12px rgba(37, 211, 102, 0.3);
+      opacity: 0.9;
     }
-
+    
     .swal2-input, 
     .swal2-textarea {
       width: 100% !important;
