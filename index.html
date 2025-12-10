@@ -204,6 +204,7 @@
             await new Promise(resolve => setTimeout(resolve, 2000));
             return { nama, isiPesan };
           },
+          showClass: { popup: 'animate__animated animate__zoomIn' },
           hideClass: { popup: 'animate__animated animate__zoomOut' }
         });
 
@@ -214,7 +215,7 @@
           // Gunakan \n untuk line break, lalu encode sekali
           const pesan = 
             `Halo min, saya ${nama} minat posting iklan di @lokerkesehatanid\n\n` +
-            `Isi pesan:\n${isiPesan}`;
+            `${isiPesan}`;
           
           const waLink = `https://wa.me/${ADMIN_WA}?text=${encodeURIComponent(pesan)}`;
 
