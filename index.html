@@ -85,7 +85,7 @@
       background-color: #b68d14be;
     }
     
-    #paragraph .btn-custom-wa {
+   #paragraph .btn-custom-wa {
       display: inline-block;
       margin: 0;
       padding: 12px 0;
@@ -192,8 +192,9 @@
           showCancelButton: true,
           confirmButtonText: 'Kirim ke WhatsApp',
           cancelButtonText: 'Batal',
+          confirmButtonColor: '#127720',
           allowOutsideClick: false,
-    allowEscapeKey: false,
+          allowEscapeKey: false,
           showLoaderOnConfirm: true,
           preConfirm: async () => {
             const nama = document.getElementById('swal-nama').value.trim();
