@@ -50,6 +50,7 @@
       color: #0000ff;
       text-decoration: none;
     }
+
     a:hover {
       color: #0a0a62;
     }
@@ -59,46 +60,49 @@
       font-weight: 700;
     }
 
-    span[style] {
-      display: inline;
-    }
-    
-    /* === Custom Styling untuk Tombol === */
-    .btn-custom-order {
-      display: inline-block;
-      width: 100%;
-      padding: 12px 20px !important;
-      font-size: 1rem;
-      font-weight: 600;
-      text-transform: uppercase;
-      border-radius: 6px;
-      transition: 0.3s ease;
-    }
-    
-    .btn-custom-order:hover {
-      opacity: 0.85;
-    }
-    
-    /* Tombol WhatsApp */
-    .btn-custom-wa {
-      display: inline-flex;
+    #paragraph span {
+      display: flex;
       align-items: center;
       justify-content: center;
-      gap: 8px;
+      margin-top: 30px;
+    }
+    
+    #paragraph .btn-custom-wa {
+      display: inline-block;
+      margin: 0;
+      padding: 12px 0;
+      border-radius: 5px;
+      align-items: center;
+      justify-content: center;
       width: 100%;
-      padding: 12px 20px !important;
-      font-size: 1rem;
-      font-weight: 600;
+      font-size: 1em;
+      font-weight: 400;
       text-transform: uppercase;
-      border-radius: 6px;
-      transition: 0.3s ease;
+      transition: all 0.3s ease;
     }
-    
+
     .btn-custom-wa:hover {
-      box-shadow: 0 4px 12px rgba(37, 211, 102, 0.3);
-      opacity: 0.9;
+      background-color: #1a6938;
     }
-    
+
+    #paragraph .btn-custom-order {
+      display: inline-block;
+      margin: 0;
+      padding: 12px 0;
+      border-radius: 5px;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      font-size: 1em;
+      font-weight: 400;
+      text-transform: uppercase;
+      transition: all 0.3s ease;
+    }
+
+   .btn-custom-order:hover {
+      background-color: #b68d14be;
+    }
+
     .swal2-input, 
     .swal2-textarea {
       width: 100% !important;
@@ -124,16 +128,9 @@
       .container {
         padding: 0 350px;
       }
-
-      #paragraph .btn-wa {
-        align-items: center;
-        justify-content: center;
-        width: 70%;
-      }
-
-      #paragraph .btn-warning {
-        align-items: center;
-        justify-content: center;
+      
+      .btn-custom-order,
+      .btn-custom-wa {
         width: 70%;
       }
     }
@@ -162,7 +159,7 @@
   $(document).ready(function() {
     const scriptUrl = "https://script.google.com/macros/s/AKfycby-SCJYg82ajGrbdhTz6zfg7ZCdPx3Zsv0DcnSqCgxxy8bVV_7EJo1214XDV7nHUS4/exec";
 
-    // ===== Ambil data dari Google Sheet =====
+    // ===== Ambil data GAS =====
     $.get(scriptUrl, function(data) {
       if (data) {
         document.title = data.title || "Tanpa Judul";
@@ -183,7 +180,7 @@
 
     // ===== Fungsi tombol WA =====
     function aktifkanTombolWA() {
-      $("#paragraph").on("click", ".btn-wa", async function (e) {
+      $("#paragraph").on("click", ".btn-custom-wa", async function (e) {
         e.preventDefault();
 
         const { value: formValues } = await Swal.fire({
