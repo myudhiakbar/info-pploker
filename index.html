@@ -153,36 +153,52 @@
 
   <footer id="footer" class="text-center mt-auto"></footer>
 
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-  <script>
-  $(document).ready(function() {
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+  $(document).ready(function () {
+  
     const scriptUrl = "https://script.google.com/macros/s/AKfycby-SCJYg82ajGrbdhTz6zfg7ZCdPx3Zsv0DcnSqCgxxy8bVV_7EJo1214XDV7nHUS4/exec";
-
-    // ===== Ambil data GAS =====
-    $.get(scriptUrl, function(data) {
-      if (data) {
+  
+    // ===== Ambil parameter sheet dari URL browser =====
+    const urlParams = new URLSearchParams(window.location.search);
+    const sheetName = urlParams.get("sheet") || "Konten";
+  
+    // ===== Ambil data dari GAS =====
+    $.getJSON(scriptUrl, { sheet: sheetName })
+      .done(function (data) {
+  
+        if (data.error) {
+          $("body").html(
+            `<div class="text-center p-5 text-danger">${data.error}</div>`
+          );
+          return;
+        }
+  
+        // Mapping data JSON ke elemen HTML
         document.title = data.title || "Tanpa Judul";
         $("#mainTitle").text(data.h1 || "");
         $("#subTitle").text(data.h2 || "");
         $("#paragraph").html(data.p || "");
-        const footerHtml = (data.footer || "").replace("{{year}}", new Date().getFullYear());
+  
+        const footerHtml = (data.footer || "")
+          .replace("{{year}}", new Date().getFullYear());
+  
         $("#footer").html(footerHtml);
-
-        // Aktifkan tombol WA setelah konten dimuat
+  
         aktifkanTombolWA();
-      } else {
-        $("body").html("<div class='text-center p-5 text-danger'>Gagal memuat data.</div>");
-      }
-    }).fail(function() {
-      $("body").html("<div class='text-center p-5 text-danger'>Gagal menghubungi server.</div>");
-    });
-
-    // ===== Fungsi tombol WA =====
+      })
+      .fail(function () {
+        $("body").html(
+          "<div class='text-center p-5 text-danger'>Gagal menghubungi server.</div>"
+        );
+      });
+  
+    // ===== Fungsi tombol WA (TIDAK DIUBAH LOGIKANYA) =====
     function aktifkanTombolWA() {
       $("#paragraph").on("click", ".btn-custom-wa", async function (e) {
         e.preventDefault();
-
+  
         const { value: formValues } = await Swal.fire({
           title: 'Hubungi Kami',
           html: `
@@ -200,34 +216,31 @@
           preConfirm: async () => {
             const nama = document.getElementById('swal-nama').value.trim();
             const isiPesan = document.getElementById('swal-isiPesan').value.trim();
+  
             if (!nama || !isiPesan) {
               Swal.showValidationMessage('Semua kolom wajib diisi ya!');
               return false;
             }
-            Swal.isLoading();
-            await new Promise(resolve => setTimeout(resolve, 2000));
+  
+            await new Promise(resolve => setTimeout(resolve, 1000));
             return { nama, isiPesan };
           },
           showClass: { popup: 'animate__animated animate__zoomIn' },
           hideClass: { popup: 'animate__animated animate__zoomOut' }
         });
-
+  
         if (formValues) {
           const ADMIN_WA = "6287713314496";
-          const { nama, isiPesan } = formValues;
-
-          // Gunakan \n untuk line break, lalu encode sekali
-          const pesan = 
-            `Halo min, saya ${nama} minat posting iklan di @lokerkesehatanid\n\n` +
-            `${isiPesan}`;
-          
-          const waLink = `https://wa.me/${ADMIN_WA}?text=${encodeURIComponent(pesan)}`;
-
-          window.location.href = waLink;
+          const pesan =
+            `Halo min, saya ${formValues.nama} minat posting iklan di @lokerkesehatanid\n\n` +
+            `${formValues.isiPesan}`;
+  
+          window.location.href =
+            `https://wa.me/${ADMIN_WA}?text=${encodeURIComponent(pesan)}`;
         }
       });
     }
   });
-  </script>
+</script>
 </body>
 </html>
