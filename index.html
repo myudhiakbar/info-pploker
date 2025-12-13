@@ -81,11 +81,11 @@
       transition: all 0.3s ease;
     }
 
-   .btn-custom-order:hover {
+    .btn-custom-order:hover {
       background-color: #b68d14be;
     }
     
-   #paragraph .btn-custom-wa {
+    #paragraph .btn-custom-wa {
       display: inline-block;
       margin: 0;
       padding: 12px 0;
@@ -123,6 +123,34 @@
       resize: vertical;
     }
 
+    #loadingOverlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: #f8f9fa;
+      z-index: 9999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    #loadingOverlay.fade-out {
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.4s ease;
+    }
+
+    .loading-content {
+      animation: fadeIn 0.6s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
     /* Responsive */
     @media (min-width: 1200px) {
       .container {
@@ -144,6 +172,13 @@
 </head>
 
 <body class="bg-light text-dark d-flex flex-column min-vh-100">
+
+    <div id="loadingOverlay">
+    <div class="loading-content text-center">
+      <div class="spinner-border text-primary mb-3" role="status"></div>
+      <div class="fw-semibold">Sedang memuat data...</div>
+    </div>
+  </div>
 
   <div class="container text-center py-5">
     <h1 id="mainTitle" class="fw-bold"></h1>
@@ -187,11 +222,14 @@
         $("#footer").html(footerHtml);
   
         aktifkanTombolWA();
+
+        $("#loadingOverlay").addClass("fade-out"); // HILANGKAN LOADING
       })
       .fail(function () {
         $("body").html(
           "<div class='text-center p-5 text-danger'>Gagal menghubungi server.</div>"
         );
+        $("#loadingOverlay").addClass("fade-out"); // HILANGKAN LOADING
       });
   
     // ===== Fungsi tombol WA (TIDAK DIUBAH LOGIKANYA) =====
